@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { 
   MessageSquare,
   ChevronLeft,
@@ -23,6 +23,7 @@ interface DashboardLayoutProps {
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const [collapsed, setCollapsed] = useState(false);
+  const location = useLocation();
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
@@ -59,17 +60,20 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           <div className="space-y-1">
             {[
               { name: "Dashboard", icon: Home, path: "/dashboard" },
-              { name: "Mensagens", icon: MessageCircle, path: "/dashboard" },
-              { name: "Contatos", icon: Users, path: "/dashboard" },
-              { name: "Campanhas", icon: Send, path: "/dashboard" },
-              { name: "Bots", icon: Bot, path: "/dashboard" },
-              { name: "Configurações", icon: Settings, path: "/dashboard" },
+              { name: "Mensagens", icon: MessageCircle, path: "/dashboard?tab=messages" },
+              { name: "Contatos", icon: Users, path: "/dashboard?tab=contacts" },
+              { name: "Campanhas", icon: Send, path: "/dashboard?tab=campaigns" },
+              { name: "Bot Builder", icon: Bot, path: "/bot-builder" },
+              { name: "Configurações", icon: Settings, path: "/dashboard?tab=settings" },
             ].map((item) => (
               <Link
                 key={item.name}
                 to={item.path}
                 className={cn(
                   "flex items-center py-2 px-3 rounded-md text-gray-700 hover:bg-gray-100 transition-colors",
+                  (location.pathname === item.path || 
+                   (location.pathname === '/dashboard' && item.path.includes(location.search))) 
+                    ? "bg-gray-100 text-brand-500" : "",
                   collapsed ? "justify-center" : "gap-3"
                 )}
               >

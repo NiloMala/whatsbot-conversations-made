@@ -1,6 +1,5 @@
-
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { 
   ChartBar, 
@@ -26,6 +25,7 @@ import {
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'disconnected' | 'waiting'>('disconnected');
   const [activeTab, setActiveTab] = useState('overview');
 
@@ -77,6 +77,14 @@ const Dashboard = () => {
     }, 3000);
   };
 
+  const handleTabClick = (tab: string) => {
+    if (tab === 'bot-builder') {
+      navigate('/bot-builder');
+    } else {
+      setActiveTab(tab);
+    }
+  };
+
   return (
     <DashboardLayout>
       <div className="flex-1 space-y-6 p-6 md:p-8">
@@ -120,31 +128,37 @@ const Dashboard = () => {
         <nav className="flex border-b">
           <button 
             className={`px-4 py-2 font-medium ${activeTab === 'overview' ? 'border-b-2 border-brand-500 text-brand-500' : 'text-gray-600'}`}
-            onClick={() => setActiveTab('overview')}
+            onClick={() => handleTabClick('overview')}
           >
             Visão Geral
           </button>
           <button 
             className={`px-4 py-2 font-medium ${activeTab === 'messages' ? 'border-b-2 border-brand-500 text-brand-500' : 'text-gray-600'}`}
-            onClick={() => setActiveTab('messages')}
+            onClick={() => handleTabClick('messages')}
           >
             Mensagens
           </button>
           <button 
             className={`px-4 py-2 font-medium ${activeTab === 'contacts' ? 'border-b-2 border-brand-500 text-brand-500' : 'text-gray-600'}`}
-            onClick={() => setActiveTab('contacts')}
+            onClick={() => handleTabClick('contacts')}
           >
             Contatos
           </button>
           <button 
             className={`px-4 py-2 font-medium ${activeTab === 'campaigns' ? 'border-b-2 border-brand-500 text-brand-500' : 'text-gray-600'}`}
-            onClick={() => setActiveTab('campaigns')}
+            onClick={() => handleTabClick('campaigns')}
           >
             Campanhas
           </button>
           <button 
+            className={`px-4 py-2 font-medium text-gray-600 hover:text-brand-500`}
+            onClick={() => handleTabClick('bot-builder')}
+          >
+            Construtor de Bots
+          </button>
+          <button 
             className={`px-4 py-2 font-medium ${activeTab === 'settings' ? 'border-b-2 border-brand-500 text-brand-500' : 'text-gray-600'}`}
-            onClick={() => setActiveTab('settings')}
+            onClick={() => handleTabClick('settings')}
           >
             Configurações
           </button>
