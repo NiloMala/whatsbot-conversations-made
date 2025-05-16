@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MessageSquare, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +27,8 @@ const Login = () => {
           title: "Login realizado com sucesso!",
           description: "Redirecionando para o dashboard...",
         });
-        // In a real app, would redirect to dashboard or handle auth
+        // Redirect to dashboard after successful login
+        navigate("/dashboard");
       } else {
         toast({
           title: "Erro ao fazer login",
