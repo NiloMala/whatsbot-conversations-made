@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useRef } from 'react';
 import {
   ReactFlow,
@@ -22,6 +21,7 @@ import PropertiesPanel from '@/components/bot-builder/PropertiesPanel';
 import MessageNode from '@/components/bot-builder/MessageNode';
 import QuestionNode from '@/components/bot-builder/QuestionNode';
 import HumanNode from '@/components/bot-builder/HumanNode';
+import RedirectNode from '@/components/bot-builder/RedirectNode';
 import { FlowNode, FlowEdge, FlowData, NodeData } from '@/types/flowTypes';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -34,10 +34,11 @@ const nodeTypes = {
   message: MessageNode,
   question: QuestionNode,
   human: HumanNode,
+  redirect: RedirectNode,
 };
 
 // Initial nodes and edges
-const initialNodes: Node<NodeData>[] = [
+const initialNodes: FlowNode[] = [
   {
     id: 'start',
     type: 'message',
@@ -51,7 +52,7 @@ const initialNodes: Node<NodeData>[] = [
   },
 ];
 
-const initialEdges: Edge[] = [];
+const initialEdges: FlowEdge[] = [];
 
 const FlowBuilder = () => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
@@ -86,7 +87,7 @@ const FlowBuilder = () => {
 
   // Add new node to the flow
   const addNode = useCallback((type: string) => {
-    const newNode: Node<NodeData> = {
+    const newNode: FlowNode = {
       id: `node-${Date.now()}`,
       type,
       position: {
@@ -226,6 +227,8 @@ const FlowBuilder = () => {
                         return '#C4B5FD';
                       case 'human':
                         return '#86EFAC';
+                      case 'redirect':
+                        return '#FFD700';
                       default:
                         return '#CBD5E1';
                     }
