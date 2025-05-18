@@ -37,7 +37,7 @@ const nodeTypes = {
 };
 
 // Initial nodes and edges
-const initialNodes: Node[] = [
+const initialNodes: Node<NodeData>[] = [
   {
     id: 'start',
     type: 'message',
@@ -55,7 +55,7 @@ const initialEdges: Edge[] = [];
 
 const FlowBuilder = () => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [selectedNode, setSelectedNode] = useState<FlowNode | null>(null);
   const [showProperties, setShowProperties] = useState(false);
@@ -73,7 +73,7 @@ const FlowBuilder = () => {
   }, [setEdges]);
  
   // Handle node click to show properties panel
-  const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
+  const onNodeClick = useCallback((_: React.MouseEvent, node: Node<NodeData>) => {
     setSelectedNode(node as FlowNode);
     setShowProperties(true);
   }, []);
@@ -86,7 +86,7 @@ const FlowBuilder = () => {
 
   // Add new node to the flow
   const addNode = useCallback((type: string) => {
-    const newNode: FlowNode = {
+    const newNode: Node<NodeData> = {
       id: `node-${Date.now()}`,
       type,
       position: {

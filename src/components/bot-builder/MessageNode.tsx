@@ -25,7 +25,7 @@ const MessageNode: React.FC<MessageNodeProps> = ({ data, selected }) => {
               {data.mediaType === 'image' && <Image className="h-3 w-3 mr-1" />}
               {data.mediaType === 'video' && <Video className="h-3 w-3 mr-1" />}
               {data.mediaType === 'audio' && <Headphones className="h-3 w-3 mr-1" />}
-              {data.mediaType === 'file' && <FileText className="h-3 w-3 mr-1" />}
+              {(data.mediaType === 'document' || data.mediaType === 'file') && <FileText className="h-3 w-3 mr-1" />}
               {data.mediaType}
             </div>
           )}
