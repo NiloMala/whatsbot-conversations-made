@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   MessageSquare,
   ChevronLeft,
@@ -24,9 +24,23 @@ interface DashboardLayoutProps {
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
+  };
+
+  const navigationItems = [
+    { name: "Dashboard", icon: Home, path: "/dashboard" },
+    { name: "Mensagens", icon: MessageCircle, path: "/dashboard/messages" },
+    { name: "Contatos", icon: Users, path: "/dashboard/contacts" },
+    { name: "Campanhas", icon: Send, path: "/dashboard/campaigns" },
+    { name: "Bot Builder", icon: Bot, path: "/bot-builder" },
+    { name: "Configurações", icon: Settings, path: "/dashboard/settings" },
+  ];
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
   };
 
   return (
@@ -58,28 +72,19 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         {/* Navigation */}
         <nav className="flex-1 py-6 px-3">
           <div className="space-y-1">
-            {[
-              { name: "Dashboard", icon: Home, path: "/dashboard" },
-              { name: "Mensagens", icon: MessageCircle, path: "/dashboard?tab=messages" },
-              { name: "Contatos", icon: Users, path: "/dashboard?tab=contacts" },
-              { name: "Campanhas", icon: Send, path: "/dashboard?tab=campaigns" },
-              { name: "Bot Builder", icon: Bot, path: "/bot-builder" },
-              { name: "Configurações", icon: Settings, path: "/dashboard?tab=settings" },
-            ].map((item) => (
-              <Link
+            {navigationItems.map((item) => (
+              <button
                 key={item.name}
-                to={item.path}
+                onClick={() => handleNavigation(item.path)}
                 className={cn(
-                  "flex items-center py-2 px-3 rounded-md text-gray-700 hover:bg-gray-100 transition-colors",
-                  (location.pathname === item.path || 
-                   (location.pathname === '/dashboard' && item.path.includes(location.search))) 
-                    ? "bg-gray-100 text-brand-500" : "",
+                  "flex items-center py-2 px-3 rounded-md text-gray-700 hover:bg-gray-100 transition-colors w-full text-left",
+                  location.pathname === item.path ? "bg-gray-100 text-brand-500" : "",
                   collapsed ? "justify-center" : "gap-3"
                 )}
               >
                 <item.icon className="h-5 w-5 flex-shrink-0" />
                 {!collapsed && <span>{item.name}</span>}
-              </Link>
+              </button>
             ))}
           </div>
         </nav>

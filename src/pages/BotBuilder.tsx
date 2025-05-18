@@ -24,6 +24,10 @@ import QuestionNode from '@/components/bot-builder/QuestionNode';
 import HumanNode from '@/components/bot-builder/HumanNode';
 import { FlowNode, FlowEdge, FlowData, NodeData } from '@/types/flowTypes';
 import { toast } from 'sonner';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 // Define node types for React Flow
 const nodeTypes = {
@@ -55,6 +59,8 @@ const FlowBuilder = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [selectedNode, setSelectedNode] = useState<FlowNode | null>(null);
   const [showProperties, setShowProperties] = useState(false);
+  const [saveDialogOpen, setSaveDialogOpen] = useState(false);
+  const [botName, setBotName] = useState('');
   const reactFlowInstance = useReactFlow();
 
   // Handle connection between nodes
@@ -151,14 +157,27 @@ const FlowBuilder = () => {
     reactFlowInstance.zoomOut();
   };
 
+  // Open save dialog
+  const handleSaveClick = () => {
+    setSaveDialogOpen(true);
+  };
+
   // Save the flow data
   const saveFlow = () => {
+    if (!botName.trim()) {
+      toast.error('Por favor, dê um nome ao seu bot!');
+      return;
+    }
+    
     const flowData: FlowData = {
+      name: botName,
       nodes: nodes as FlowNode[],
       edges: edges as FlowEdge[],
     };
+    
     console.log('Saving flow data:', flowData);
-    toast.success('Fluxo do bot salvo com sucesso!');
+    toast.success(`Bot "${botName}" salvo com sucesso!`);
+    setSaveDialogOpen(false);
   };
 
   return (
@@ -178,7 +197,7 @@ const FlowBuilder = () => {
               onDeleteSelected={deleteSelectedNode}
               onZoomIn={zoomIn}
               onZoomOut={zoomOut}
-              onSave={saveFlow}
+              onSave={handleSaveClick}
               hasSelection={!!selectedNode}
             />
 
@@ -237,6 +256,35 @@ const FlowBuilder = () => {
           </div>
         </div>
       </div>
+
+      {/* Save Bot Dialog */}
+      <Dialog open={saveDialogOpen} onOpenChange={setSaveDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Salvar Bot</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="bot-name">Nome do Bot</Label>
+              <Input 
+                id="bot-name" 
+                placeholder="Atendimento Automático" 
+                value={botName}
+                onChange={(e) => setBotName(e.target.value)}
+              />
+              <p className="text-xs text-gray-500">
+                Dê um nome para identificar este fluxo de atendimento
+              </p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setSaveDialogOpen(false)}>
+              Cancelar
+            </Button>
+            <Button onClick={saveFlow}>Salvar Bot</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 };

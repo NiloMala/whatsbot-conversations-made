@@ -13,6 +13,10 @@ import Contact from "./pages/Contact";
 import Dashboard from "./pages/Dashboard";
 import BotBuilder from "./pages/BotBuilder";
 import NotFound from "./pages/NotFound";
+import MessagesPage from "./pages/dashboard/MessagesPage";
+import ContactsPage from "./pages/dashboard/ContactsPage";
+import CampaignsPage from "./pages/dashboard/CampaignsPage";
+import SettingsPage from "./pages/dashboard/SettingsPage";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +34,10 @@ const App = () => (
           <Route path="/signup" element={<Signup />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/messages" element={<MessagesPage />} />
+          <Route path="/dashboard/contacts" element={<ContactsPage />} />
+          <Route path="/dashboard/campaigns" element={<CampaignsPage />} />
+          <Route path="/dashboard/settings" element={<SettingsPage />} />
           <Route path="/bot-builder" element={<BotBuilder />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
