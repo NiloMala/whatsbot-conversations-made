@@ -25,6 +25,7 @@ const HumanNode: React.FC<HumanNodeProps> = ({ data, selected }) => {
       </div>
       
       <Handle type="target" position={Position.Top} className="w-3 h-3 bg-green-500" />
+      <Handle type="source" position={Position.Bottom} className="w-3 h-3 bg-green-500" />
     </div>
   );
 };

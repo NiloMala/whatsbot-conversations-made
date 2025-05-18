@@ -99,7 +99,7 @@ const FlowToolbar: React.FC<FlowToolbarProps> = ({
           <span className="text-xs">Configurações</span>
         </Button>
         <Button 
-          variant="primary" 
+          variant="default" 
           size="sm" 
           className="flex items-center gap-1 bg-brand-500 hover:bg-brand-600 text-white"
           onClick={onSave}
